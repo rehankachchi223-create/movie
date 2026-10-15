@@ -16,7 +16,7 @@ export default function FirebaseSetupBanner() {
             !
           </span>
           <p className="text-amber-200">
-            <strong className="font-semibold text-white">Firebase Migration Complete:</strong> Paste your Firebase configuration keys into <code className="rounded bg-black/40 px-1.5 py-0.5 font-mono text-xs text-amber-300">frontend/.env</code> to connect live Cloud Firestore & Firebase Auth.
+            <strong className="font-semibold text-white">Firebase is not configured:</strong> Browsing works in guest mode. Add the Firebase config as GitHub Actions secrets to enable sign-in and saved lists.
           </p>
         </div>
         <button

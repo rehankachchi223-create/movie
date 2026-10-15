@@ -6,13 +6,20 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, db, googleProvider } from '../firebase/config';
+import { auth, db, googleProvider, isFirebaseConfigured } from '../firebase/config';
+
+function requireFirebaseConfig() {
+  if (!isFirebaseConfigured || !auth || !db) {
+    throw new Error('Sign-in is unavailable until Firebase is configured for this deployment.');
+  }
+}
 
 export const authService = {
   /**
    * Register a new user with Email, Password, and Display Name.
    */
   register: async ({ email, password, name }) => {
+    requireFirebaseConfig();
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -47,6 +54,7 @@ export const authService = {
    * Log in an existing user with Email and Password.
    */
   login: async ({ email, password }) => {
+    requireFirebaseConfig();
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -79,6 +87,7 @@ export const authService = {
    * One-click Google Sign-in with Firebase.
    */
   loginWithGoogle: async () => {
+    requireFirebaseConfig();
     const userCredential = await signInWithPopup(auth, googleProvider);
     const user = userCredential.user;
 
@@ -108,6 +117,7 @@ export const authService = {
    * Sign out the currently authenticated user.
    */
   logout: async () => {
+    requireFirebaseConfig();
     await signOut(auth);
     return { data: { message: 'Logged out successfully' } };
   },
@@ -116,6 +126,7 @@ export const authService = {
    * Fetch current user profile.
    */
   getCurrentUser: async () => {
+    requireFirebaseConfig();
     const currentUser = auth.currentUser;
     if (!currentUser) {
       throw new Error('Not authenticated');
@@ -145,6 +156,7 @@ export const authService = {
    * Legacy token refresh stub for backwards compatibility.
    */
   refresh: async () => {
+    requireFirebaseConfig();
     const currentUser = auth.currentUser;
     if (!currentUser) {
       throw new Error('No user to refresh');

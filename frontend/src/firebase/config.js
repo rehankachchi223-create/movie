@@ -24,12 +24,16 @@ export const isFirebaseConfigured = Boolean(
   )
 );
 
-// Initialize Firebase App
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+// Keep the app usable in guest mode until deployment credentials are provided.
+const app = isFirebaseConfigured
+  ? getApps().length === 0
+    ? initializeApp(firebaseConfig)
+    : getApps()[0]
+  : null;
 
 // Export Auth & Firestore instances
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const googleProvider = new GoogleAuthProvider();
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
+export const googleProvider = app ? new GoogleAuthProvider() : null;
 
 export default app;

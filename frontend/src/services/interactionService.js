@@ -20,7 +20,7 @@ const localMemoryStore = {
 };
 
 function getCurrentUserId() {
-  return auth.currentUser?.uid || 'guest-user';
+  return auth?.currentUser?.uid || 'guest-user';
 }
 
 async function getMovieData(movieId) {
