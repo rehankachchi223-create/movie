@@ -35,12 +35,10 @@ export const authService = {
       created_at: new Date().toISOString(),
     };
 
-    // Store user document in Firestore
-    try {
-      await setDoc(doc(db, 'users', user.uid), userData, { merge: true });
-    } catch (e) {
+    // Profile persistence must not block account creation if Firestore is unavailable.
+    void setDoc(doc(db, 'users', user.uid), userData, { merge: true }).catch((e) => {
       console.warn('Could not save user profile document to Firestore:', e);
-    }
+    });
 
     return {
       data: {
@@ -66,15 +64,6 @@ export const authService = {
       created_at: user.metadata?.creationTime || new Date().toISOString(),
     };
 
-    try {
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      if (userDoc.exists()) {
-        profile = { ...profile, ...userDoc.data() };
-      }
-    } catch (e) {
-      console.warn('Could not load user profile from Firestore:', e);
-    }
-
     return {
       data: {
         access_token: await user.getIdToken(),
@@ -99,11 +88,9 @@ export const authService = {
       created_at: user.metadata?.creationTime || new Date().toISOString(),
     };
 
-    try {
-      await setDoc(doc(db, 'users', user.uid), userData, { merge: true });
-    } catch (e) {
+    void setDoc(doc(db, 'users', user.uid), userData, { merge: true }).catch((e) => {
       console.warn('Could not save Google user profile to Firestore:', e);
-    }
+    });
 
     return {
       data: {
