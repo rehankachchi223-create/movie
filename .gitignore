@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+venv/
+env/
+ENV/
+.env/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+*.env
+!*.env.example
+
+# Database & SQLite files
+*.db
+*.sqlite3
+movierec.db
+test_movierec.db
+test_empty_init.db
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+*.egg-info/
+*.egg
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
